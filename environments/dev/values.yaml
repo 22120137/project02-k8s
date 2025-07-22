@@ -22,10 +22,10 @@ services:
     
   vets-service:
     image:
-      tag: 44ef3df
+      tag: a2a2e2c
 
   visits-service:
     image:
-      tag: 44ef3df
+      tag: a2a2e2c
 
   
