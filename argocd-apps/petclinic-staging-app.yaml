@@ -7,7 +7,7 @@ spec:
   project: default
   
   source: 
-    repoURL: https://github.com/HCMUS-DevOps-Projects/project02-k8s
+    repoURL: https://github.com/22120137/project02-k8s.git
     targetRevision: HEAD
     path: .
     helm:
