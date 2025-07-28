@@ -10,8 +10,7 @@ services:
       tag: latest
     port: 8080
     replicaCount: 1
-    ingress: 
-      host: petclinic.com
+    type: LoadBalancer
 
   config-server:
     name: config-server

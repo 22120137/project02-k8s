@@ -6,10 +6,10 @@ imageTag: &tag V7.0
 
 services:
   api-gateway:
+    type: LoadBalancer
     image:
       tag: *tag
-    ingress:
-      host: petclinic-staging.com
+      
 
   config-server:
     image:
