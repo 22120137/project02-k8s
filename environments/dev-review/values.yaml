@@ -5,8 +5,6 @@ services:
   api-gateway:
     image:
       tag: latest
-    ingress:
-      host: petclinic-dev-review.com
 
   config-server:
     image:
