@@ -26,6 +26,6 @@ services:
 
   visits-service:
     image:
-      tag: de5941a
+      tag: 8a0313d
 
   
