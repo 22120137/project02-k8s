@@ -2,7 +2,7 @@ global:
   namespace: staging
   dockeruser: minhhuy27
 
-imageTag: &tag 10.1
+imageTag: &tag V10.2
 
 services:
   api-gateway:
