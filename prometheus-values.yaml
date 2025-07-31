@@ -14,3 +14,8 @@ serverFiles:
 server:
   extraArgs:
     enable-feature: exemplar-storage
+
+prometheus:
+  prometheus Spec:
+    enableFeatures:
+      - exemplar-storage
