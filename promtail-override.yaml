@@ -1,0 +1,62 @@
+promtail:
+  enabled: true
+  extraVolumes:
+    - name: positions
+      emptyDir: {}
+  extraVolumeMounts:
+    - name: positions
+      mountPath: /var/promtail
+  config:
+    # 1. Đặt server và client như chart mặc định
+    server:
+      http_listen_port: 9080
+      grpc_listen_port: 0
+
+    positions:
+      filename: /var/promtail/positions.yaml
+
+    clients:
+      - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+
+    scrape_configs:
+      - job_name: kubernetes-pods-app
+        kubernetes_sd_configs:
+          - role: pod
+
+        # 2. pipeline_stages để extract traceId và spanId
+        pipeline_stages:
+          # regex lấy traceId và spanId từ log console pattern
+          - regex:
+              expression: '.*\[(?P<traceId>[a-zA-Z0-9\-]*),(?P<spanId>[a-zA-Z0-9\-]*)\].*'
+
+
+          # gán traceId và spanId làm label
+          - labels:
+              - traceId
+              - spanId
+
+        relabel_configs:
+          # giữ lại chỉ Pod có label app=petclinic-*
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            regex: "customers-service|vets-service|visits-service|api-gateway"
+            action: keep
+
+          # map label app
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            target_label: app
+
+          # thêm namespace, pod, container
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
+          - source_labels: [__meta_kubernetes_pod_container_name]
+            target_label: container
+
+        static_configs:
+          - targets: ['localhost']
+            labels:
+              job: kubernetes-pods
+
+            # đường dẫn log stdout của k8s
+            __path__: /var/log/pods/*/*.log
