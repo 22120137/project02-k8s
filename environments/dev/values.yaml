@@ -18,7 +18,7 @@ services:
 
   customers-service:
     image:
-      tag: 44ef3df
+      tag: 70e1df4
     
   vets-service:
     image:
